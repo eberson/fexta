@@ -22,6 +22,8 @@
 hs_err_pid*
 
 .settings
+.classpath
+.project
 
 target/
 pom.xml.tag
