@@ -11,15 +11,15 @@ import br.com.etec.fexta.model.Usuario;
 
 public class UsuarioDTO implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private String numero;
-    
+
     private String nome;
-    
-	private String sexo;
-	
-	private Set<UsuarioDTO> contatos;
+
+    private String sexo;
+
+    private Set<UsuarioDTO> contatos;
 
     public String getSexo() {
         return sexo;
@@ -44,43 +44,57 @@ public class UsuarioDTO implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
     public Set<UsuarioDTO> getContatos() {
-    	if (contatos == null){
-    		contatos = new HashSet<>();
-    	}
-    	
-		return contatos;
-	}
-    
+        if (contatos == null) {
+            contatos = new HashSet<>();
+        }
+
+        return contatos;
+    }
+
     public void setContatos(Set<UsuarioDTO> contatos) {
-		this.contatos = contatos;
-	}
-    
+        this.contatos = contatos;
+    }
+
     public static UsuarioDTO valueOf(Usuario usuario) {
-    	if (usuario == null){
-    		return null;
-    	}
-    	
-		UsuarioDTO dto = new UsuarioDTO();
-		
-		dto.setNome(usuario.getNome());
-		dto.setNumero(usuario.getNumero());
-		dto.setSexo(usuario.getSexo().toString());
-		dto.setContatos(usuario.getContatos().stream().map(u -> UsuarioDTO.valueOf(u)).collect(Collectors.toSet()));
-		
-		return dto;
-	}
-    
-    public Usuario toUsuario(){
-    	Usuario usuario = new Usuario();
-    	
-    	usuario.setNome(nome);
-    	usuario.setNumero(numero);
-    	usuario.setSexo(Sexo.valueOf(sexo));
-    	usuario.setContatos(getContatos().stream().map(u -> u.toUsuario()).collect(Collectors.toSet()));
-    	
-    	return usuario;
+        if (usuario == null) {
+            return null;
+        }
+
+        UsuarioDTO dto = new UsuarioDTO();
+
+        dto.setNome(usuario.getNome());
+        dto.setNumero(usuario.getNumero());
+        dto.setSexo(usuario.getSexo().toString());
+        
+        Set<UsuarioDTO> contatos = new HashSet<>();
+        
+        for(Usuario usr : usuario.getContatos()){
+            contatos.add(UsuarioDTO.valueOf(usr));
+        }
+        
+        dto.setContatos(contatos);
+
+        return dto;
+    }
+
+    public Usuario toUsuario() {
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(nome);
+        usuario.setNumero(numero);
+        usuario.setSexo(Sexo.valueOf(sexo));
+        
+        Set<Usuario> contatos = new HashSet<>();
+        
+        for(UsuarioDTO dto : getContatos()){
+            contatos.add(dto.toUsuario());
+        }
+        
+        usuario.setContatos(contatos);
+
+        return usuario;
     }
 
     @Override

@@ -8,25 +8,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.etec.fexta.model.Festa;
+import br.com.etec.fexta.model.ItemFesta;
+import br.com.etec.fexta.model.Usuario;
 
-public class FestaDTO implements Serializable{
-    
-	private static final long serialVersionUID = 1L;
+public class FestaDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
-    
+
     private String nome;
-    
+
     private LocalDateTime data;
-    
-    private String local;    
-    
+
+    private String local;
+
     private UsuarioDTO criador;
-    
+
     private Set<UsuarioDTO> convidados;
-    
-    private TipoDTO tipoFesta;   
-    
+
+    private TipoDTO tipoFesta;
+
     private Set<ItemFestaDTO> itens;
 
     public Long getId() {
@@ -70,10 +72,10 @@ public class FestaDTO implements Serializable{
     }
 
     public Set<UsuarioDTO> getConvidados() {
-    	if (convidados == null){
-    		convidados = new HashSet<>();
-    	}
-    	
+        if (convidados == null) {
+            convidados = new HashSet<>();
+        }
+
         return convidados;
     }
 
@@ -90,45 +92,58 @@ public class FestaDTO implements Serializable{
     }
 
     public Set<ItemFestaDTO> getItens() {
-    	if (itens == null){
-    		itens = new HashSet<>();
-    	}
-    	
+        if (itens == null) {
+            itens = new HashSet<>();
+        }
+
         return itens;
     }
 
     public void setItens(Set<ItemFestaDTO> itens) {
         this.itens = itens;
     }
-    
-    public static FestaDTO valueOf(Festa festa){
-    	FestaDTO dto = new FestaDTO();
-    	
-    	dto.setConvidados(festa.getConvidados().stream().map(u -> UsuarioDTO.valueOf(u)).collect(Collectors.toSet()));
-    	dto.setCriador(UsuarioDTO.valueOf(festa.getCriador()));
-    	dto.setData(festa.getData());
-    	dto.setId(festa.getId());
-    	dto.setItens(festa.getItens().stream().map(i -> ItemFestaDTO.valueOf(i)).collect(Collectors.toSet()));
-    	dto.setLocal(festa.getLocal());
-    	dto.setNome(festa.getNome());
-    	dto.setTipoFesta(TipoDTO.valueOf(festa.getTipoFesta()));
-    	
-    	return dto;
+
+    public static FestaDTO valueOf(Festa festa) {
+        FestaDTO dto = new FestaDTO();
+
+        for (Usuario usr : festa.getConvidados()){
+            dto.getConvidados().add(UsuarioDTO.valueOf(usr));
+        }
+        
+        dto.setCriador(UsuarioDTO.valueOf(festa.getCriador()));
+        dto.setData(festa.getData());
+        dto.setId(festa.getId());
+
+        for(ItemFesta item : festa.getItens()){
+            dto.getItens().add(ItemFestaDTO.valueOf(item));
+        }
+
+        dto.setLocal(festa.getLocal());
+        dto.setNome(festa.getNome());
+        dto.setTipoFesta(TipoDTO.valueOf(festa.getTipoFesta()));
+
+        return dto;
     }
-    
-    public Festa toFesta(){
-    	Festa festa = new Festa();
-    	
-    	festa.setConvidados(getConvidados().stream().map(u -> u.toUsuario()).collect(Collectors.toSet()));
-    	festa.setCriador(criador.toUsuario());
-    	festa.setData(data);
-    	festa.setId(id);
-    	festa.setItens(getItens().stream().map(i -> i.toItemFesta()).collect(Collectors.toSet()));
-    	festa.setLocal(local);
-    	festa.setNome(nome);
-    	festa.setTipoFesta(tipoFesta.toTipo());
-    	
-    	return festa;
+
+    public Festa toFesta() {
+        Festa festa = new Festa();
+
+        festa.setCriador(criador.toUsuario());
+        festa.setData(data);
+        festa.setId(id);
+        festa.setLocal(local);
+        festa.setNome(nome);
+        festa.setTipoFesta(tipoFesta.toTipo());
+
+        for (UsuarioDTO usr : getConvidados()) {
+            festa.getConvidados().add(usr.toUsuario());
+        }
+        
+        for(ItemFestaDTO item : getItens()){
+            festa.getItens().add(item.toItemFesta());
+        }
+        
+        return festa;
     }
 
     @Override
@@ -155,6 +170,5 @@ public class FestaDTO implements Serializable{
         }
         return true;
     }
-    
-    
+
 }

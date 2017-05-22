@@ -8,45 +8,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.etec.fexta.dto.UsuarioDTO;
-import br.com.etec.fexta.service.UsuarioService;
+import br.com.etec.fexta.dto.TipoDTO;
+import br.com.etec.fexta.service.TipoService;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioResource {
-
+@RequestMapping("/tipo")
+public class TipoResource {
+    
     @Autowired
-    private UsuarioService service;
-
+    private TipoService service;
+        
     @RequestMapping(path = "/todos",
                     method = RequestMethod.GET,
                     produces = "application/json")
-    public List<UsuarioDTO> searchAll() {
+    public List<TipoDTO> searchAll(){
         return service.all();
     }
-
+        
     @RequestMapping(path = "/find/{numero}",
                     method = RequestMethod.GET,
                     produces = "application/json")
-    public UsuarioDTO searchOne(@PathVariable String numero) {
+    public TipoDTO searchOne(@PathVariable Long numero){
         return service.one(numero);
     }
-
+        
     @RequestMapping(path = "/salva",
                     method = RequestMethod.POST,
                     consumes = "application/json",
                     produces = "application/json")
-    public UsuarioDTO save(@RequestBody UsuarioDTO dto) {
+    public TipoDTO save(@RequestBody TipoDTO dto){
         return service.save(dto);
-    }
-
+    } 
+        
     @RequestMapping(path = "/exclui",
                     method = RequestMethod.POST,
                     consumes = "application/json",
                     produces = "application/json")
-    public String remove(@RequestBody UsuarioDTO dto) {
+    public String remove(@RequestBody TipoDTO dto){
         service.remove(dto);
-        return String.format("Usuário, %s, removido com sucesso", dto.getNome());
+        return String.format("Tipo, %s, removido com sucesso", dto.getNomeTipo());
     }
 }

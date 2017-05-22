@@ -28,7 +28,7 @@ public class Usuario implements Serializable {
     private Sexo sexo;
     
     @ElementCollection
-    @CollectionTable(name="festa_tem_itens")
+    @CollectionTable(name="usuario_tem_contatos")
     private Set<Usuario> contatos;
 
     public Sexo getSexo() {

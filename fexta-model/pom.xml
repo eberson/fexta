@@ -8,6 +8,11 @@
 	</parent>
 
 	<artifactId>fexta-model</artifactId>
+        
+        <properties>
+		<java.version>1.7</java.version>
+	</properties>
+
 	
 	<dependencies>
 		<dependency>

@@ -39,4 +39,25 @@
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
+        
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <mainClass>br.com.etec.fexta.FextaApplication</mainClass>
+                        <finalName>${project.artifactId}</finalName>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+        
 </project>

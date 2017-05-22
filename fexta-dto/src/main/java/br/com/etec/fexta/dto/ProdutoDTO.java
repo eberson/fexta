@@ -1,5 +1,6 @@
 package br.com.etec.fexta.dto;
 
+import br.com.etec.fexta.model.Categoria;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,6 +12,9 @@ public class ProdutoDTO implements Serializable {
 
 	private Long codigo;
 	private String nome;
+        
+        
+        private Categoria categoria;
 
 	public Long getCodigo() {
 		return codigo;
@@ -74,4 +78,18 @@ public class ProdutoDTO implements Serializable {
 		}
 		return true;
 	}
+
+    /**
+     * @return the categoria
+     */
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    /**
+     * @param categoria the categoria to set
+     */
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 }
